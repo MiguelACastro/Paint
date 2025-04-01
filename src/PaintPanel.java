@@ -11,12 +11,23 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-public class PaintPanel extends JPanel{
+public class PaintPanel extends JPanel {
+	public static final int HERRAMIENTA_PINCEL = 0;
+	public static final int HERRAMIENTA_CUADRADO = 1;
+	public static final int HERRAMIENTA_CIRCULO = 2;
+	public static final int HERRAMIENTA_TRIANGULO = 3;
+	public static final int HERRAMIENTA_LINEA = 4;
 	
-	private ArrayList<Trazo> trazos = new ArrayList<Trazo>();
+	
+	private ArrayList<Pintable> figuras = new ArrayList<Pintable>();
+	
 	
 	private Color color = Color.BLACK;
 	private BasicStroke grosor = new BasicStroke(3);
+	private int herramienta = HERRAMIENTA_PINCEL;
+	
+	private int numClicks = 0;
+	private int x1, y1, x2, y2;
 	
 	public PaintPanel() {
 		this.setBackground(Color.WHITE);
@@ -25,18 +36,52 @@ public class PaintPanel extends JPanel{
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				super.mouseDragged(e);
-				trazos.getLast().addPoint(new Point(e.getX(), e.getY()));
-				repaint();
+				if(herramienta == HERRAMIENTA_PINCEL) {						
+					Trazo trazoActual = (Trazo) figuras.getLast();
+					trazoActual.addPoint(new Point(e.getX(), e.getY()));
+					repaint();
+				}
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 				super.mousePressed(e);
-				trazos.add(new Trazo(color, grosor));
+				if(herramienta == HERRAMIENTA_PINCEL) {	
+					figuras.add(new Trazo(color, grosor));
+				}
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if(herramienta == HERRAMIENTA_CUADRADO) {
+					figuras.add(new Cuadrado(e.getX(), e.getY(), 80, 80, color, grosor));
+				}
+				else if(herramienta == HERRAMIENTA_CIRCULO) {
+					figuras.add(new Circulo(e.getX(), e.getY(), 80, color, grosor));
+				}
+				else if(herramienta == HERRAMIENTA_LINEA) {
+					numClicks++;
+					if(numClicks == 1) {
+						x1 = e.getX();
+						y1 = e.getY();
+					}
+					else if(numClicks == 2) {
+						numClicks = 0;
+						x2 = e.getX();
+						y2 = e.getY();
+						figuras.add(new Linea(x1, y1, x2, y2, color, grosor));
+					}
+					
+				}
+				repaint();
 			}
 		};
 		this.addMouseListener(mouse);
 		this.addMouseMotionListener(mouse);
+	}
+	
+	public void setHerramienta(int herramienta) {
+		this.herramienta  = herramienta;
 	}
 	
 	public void setColor(Color color) {
@@ -52,20 +97,9 @@ public class PaintPanel extends JPanel{
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		
-		for (Iterator iterator = trazos.iterator(); iterator.hasNext();) {
-			Trazo trazo = (Trazo) iterator.next();
-			
-			g2d.setColor(trazo.getColor());
-			g2d.setStroke(trazo.getGrosor());
-			
-			ArrayList<Point> puntos = trazo.getPuntos();
-			if(puntos.size()>1) {
-				for (int i = 1; i < puntos.size(); i++) {
-					Point p1 = puntos.get(i-1);
-					Point p2 = puntos.get(i);
-					g2d.drawLine(p1.x,p1.y,p2.x,p2.y);
-				}
+		for (Iterator iterator = figuras.iterator(); iterator.hasNext();) {
+			Pintable figura =  (Pintable) iterator.next();
+			figura.pintar(g2d);
 			}
 		}
-	}
 }

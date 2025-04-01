@@ -123,6 +123,13 @@ public class InterfazPaint extends JFrame{
 		panelHerramientas.add(panelPincel);
 		
 		JButton botonPincel = new JButton("Pincel");
+		botonPincel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCanvas.setHerramienta(PaintPanel.HERRAMIENTA_PINCEL);
+			}
+		});
 		panelPincel.add(botonPincel);
 		
 		JButton botonBorrador = new JButton("Borrador");
@@ -141,6 +148,13 @@ public class InterfazPaint extends JFrame{
 			}
 		};
 		botonRectangulo.setPreferredSize(new Dimension(40,40));
+		botonRectangulo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCanvas.setHerramienta(PaintPanel.HERRAMIENTA_CUADRADO);
+			}
+		});
 		panelFiguras.add(botonRectangulo);
 		
 		JButton botonCirculo = new JButton() {
@@ -152,6 +166,13 @@ public class InterfazPaint extends JFrame{
 			}
 		};
 		botonCirculo.setPreferredSize(new Dimension(40,40));
+		botonCirculo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCanvas.setHerramienta(PaintPanel.HERRAMIENTA_CIRCULO);
+			}
+		});
 		panelFiguras.add(botonCirculo);
 		
 		JButton botonTriangulo = new JButton() {
@@ -177,6 +198,13 @@ public class InterfazPaint extends JFrame{
 			}
 		};
 		botonLinea.setPreferredSize(new Dimension(40,40));
+		botonLinea.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCanvas.setHerramienta(PaintPanel.HERRAMIENTA_LINEA);
+			}
+		});
 		panelFiguras.add(botonLinea);
 		
 		JPanel panelLimpiar = new JPanel();
