@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -16,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class InterfazPaint extends JFrame{
 	
@@ -38,8 +42,7 @@ public class InterfazPaint extends JFrame{
 		
 		panelInterfaz.setBackground(Color.BLACK);
 		
-		JPanel panelCanvas = new JPanel();
-		panelCanvas.setBackground(Color.WHITE);
+		PaintPanel panelCanvas = new PaintPanel();
 		panelCanvas.setPreferredSize(new Dimension(800, 600));
 		panelCanvas.setMinimumSize(new Dimension(800, 600));
 		reglas.gridx = 1;
@@ -76,6 +79,13 @@ public class InterfazPaint extends JFrame{
 				JButton botonColor = new JButton();
 				botonColor.setBackground(colores[i][j]);
 				botonColor.setPreferredSize(new Dimension(50,50));
+				botonColor.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						panelCanvas.setColor(botonColor.getBackground());
+					}
+				});
 				reglas.gridy = i;
 				reglas.gridx = j;
 				reglas.gridwidth = 1;
@@ -93,12 +103,18 @@ public class InterfazPaint extends JFrame{
 		panelHerramientas.add(etiquetaGrosor);
 		panelHerramientas.add(Box.createVerticalStrut(10));
 		
-		JSlider sliderGrosor = new JSlider(1, 10, 2);	
-		sliderGrosor.setMajorTickSpacing(1);
+		JSlider sliderGrosor = new JSlider(1, 15, 2);	
+		sliderGrosor.setMajorTickSpacing(2);
 		sliderGrosor.setPaintTicks(true);
-		sliderGrosor.setLabelTable(sliderGrosor.createStandardLabels(1));
+		sliderGrosor.setLabelTable(sliderGrosor.createStandardLabels(2));
 		sliderGrosor.setPaintLabels(true);
 		sliderGrosor.setAlignmentX(Component.LEFT_ALIGNMENT);
+		sliderGrosor.addChangeListener(new ChangeListener() {	
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				panelCanvas.setGrosor(sliderGrosor.getValue());
+			}
+		});
 		panelHerramientas.add(sliderGrosor);
 		panelHerramientas.add(Box.createVerticalGlue());
 		
