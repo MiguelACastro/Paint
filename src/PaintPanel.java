@@ -17,6 +17,7 @@ public class PaintPanel extends JPanel {
 	public static final int HERRAMIENTA_CIRCULO = 2;
 	public static final int HERRAMIENTA_TRIANGULO = 3;
 	public static final int HERRAMIENTA_LINEA = 4;
+	public static final int HERRAMIENTA_BORRADOR = 5;
 	
 	
 	private ArrayList<Pintable> figuras = new ArrayList<Pintable>();
@@ -39,8 +40,12 @@ public class PaintPanel extends JPanel {
 				if(herramienta == HERRAMIENTA_PINCEL) {						
 					Trazo trazoActual = (Trazo) figuras.getLast();
 					trazoActual.addPoint(new Point(e.getX(), e.getY()));
-					repaint();
 				}
+				if(herramienta == HERRAMIENTA_BORRADOR) {
+					figuras.add(new Cuadrado(e.getX(), e.getY(), 5*(int)grosor.getLineWidth(),
+								5*(int)grosor.getLineWidth(), color, grosor, true));
+				}
+				repaint();
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -82,6 +87,7 @@ public class PaintPanel extends JPanel {
 	
 	public void setHerramienta(int herramienta) {
 		this.herramienta  = herramienta;
+		numClicks=0;
 	}
 	
 	public void setColor(Color color) {
@@ -101,5 +107,10 @@ public class PaintPanel extends JPanel {
 			Pintable figura =  (Pintable) iterator.next();
 			figura.pintar(g2d);
 			}
-		}
+	}
+	
+	public void borrarTodo() {
+		figuras.clear();
+		repaint();
+	}
 }

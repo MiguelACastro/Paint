@@ -133,6 +133,12 @@ public class InterfazPaint extends JFrame{
 		panelPincel.add(botonPincel);
 		
 		JButton botonBorrador = new JButton("Borrador");
+		botonBorrador.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCanvas.setHerramienta(PaintPanel.HERRAMIENTA_BORRADOR);
+			}
+		});
 		panelPincel.add(botonBorrador);
 		
 		JPanel panelFiguras = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
@@ -211,6 +217,13 @@ public class InterfazPaint extends JFrame{
 		panelLimpiar.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelHerramientas.add(panelLimpiar);
 		JButton botonLimpiar = new JButton("Limpiar");
+		botonLimpiar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				panelCanvas.borrarTodo();
+			}
+		});
 		panelLimpiar.add(botonLimpiar);
 		
 		return panelInterfaz;
