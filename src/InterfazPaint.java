@@ -9,15 +9,22 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -212,6 +219,37 @@ public class InterfazPaint extends JFrame{
 			}
 		});
 		panelFiguras.add(botonLinea);
+		
+		JPanel panelOpcionesFiguras = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+		panelOpcionesFiguras.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelHerramientas.add(panelOpcionesFiguras);
+		
+		JCheckBox checkboxRelleno = new JCheckBox("Relleno");
+		checkboxRelleno.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				panelCanvas.setRelleno(checkboxRelleno.isSelected());
+			}
+		});
+		panelOpcionesFiguras.add(checkboxRelleno);
+		
+		SpinnerModel modelo = new SpinnerNumberModel(80, 10, 500, 10);
+		JSpinner spinnerSize = new JSpinner(modelo);
+		spinnerSize.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				try {
+					spinnerSize.commitEdit();
+				} catch(ParseException ex) {	
+					spinnerSize.setValue(80);
+				}
+				int size =(Integer) spinnerSize.getValue();
+				panelCanvas.setFiguraSize(size);
+			}
+		});
+		panelOpcionesFiguras.add(spinnerSize);
 		
 		JPanel panelLimpiar = new JPanel();
 		panelLimpiar.setAlignmentX(Component.LEFT_ALIGNMENT);

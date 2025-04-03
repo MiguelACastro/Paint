@@ -8,7 +8,7 @@ public class Trazo extends Pintable{
 	private ArrayList<Point> puntos = new ArrayList<Point>();
 		
 	public Trazo(Color color, BasicStroke grosor) {
-		super(color, grosor);
+		super(color, grosor, false);
 	}
 
 	public ArrayList<Point> getPuntos() {

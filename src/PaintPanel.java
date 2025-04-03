@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ public class PaintPanel extends JPanel {
 	private Color color = Color.BLACK;
 	private BasicStroke grosor = new BasicStroke(3);
 	private int herramienta = HERRAMIENTA_PINCEL;
+	private int figuraSize = 80;
+	private boolean relleno = false;
 	
 	private int numClicks = 0;
 	private int x1, y1, x2, y2;
@@ -43,7 +44,7 @@ public class PaintPanel extends JPanel {
 				}
 				if(herramienta == HERRAMIENTA_BORRADOR) {
 					figuras.add(new Cuadrado(e.getX(), e.getY(), 5*(int)grosor.getLineWidth(),
-								5*(int)grosor.getLineWidth(), color, grosor, true));
+								5*(int)grosor.getLineWidth(), getBackground(), grosor, true));
 				}
 				repaint();
 			}
@@ -59,10 +60,10 @@ public class PaintPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 				if(herramienta == HERRAMIENTA_CUADRADO) {
-					figuras.add(new Cuadrado(e.getX(), e.getY(), 80, 80, color, grosor));
+					figuras.add(new Cuadrado(e.getX(), e.getY(), figuraSize, figuraSize, color, grosor, relleno));
 				}
 				else if(herramienta == HERRAMIENTA_CIRCULO) {
-					figuras.add(new Circulo(e.getX(), e.getY(), 80, color, grosor));
+					figuras.add(new Circulo(e.getX(), e.getY(), figuraSize, color, grosor, relleno));
 				}
 				else if(herramienta == HERRAMIENTA_LINEA) {
 					numClicks++;
@@ -96,6 +97,14 @@ public class PaintPanel extends JPanel {
 	
 	public void setGrosor(int grosor) {
 		this.grosor = new BasicStroke(grosor);
+	}
+	
+	public void setFiguraSize(int figuraSize) {
+		this.figuraSize = figuraSize; 
+	}
+	
+	public void setRelleno(boolean relleno) {
+		this.relleno = relleno;
 	}
 	
 	@Override

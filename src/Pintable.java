@@ -6,10 +6,12 @@ abstract class Pintable {
 	
 	protected Color color;
 	protected BasicStroke grosor;
+	protected boolean esRellena;
 	
-	public Pintable(Color color, BasicStroke grosor) {
+	public Pintable(Color color, BasicStroke grosor, boolean esRellena) {
 		this.color = color;
 		this.grosor = grosor;
+		this.esRellena = esRellena;
 	}
 	
 	public Color getColor() {
